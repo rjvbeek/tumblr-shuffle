@@ -1,5 +1,5 @@
 <widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.robbeen.tumblrshuffle" version="0.5" versionCode="1">
-	<name>Meistro</name>
+	<name>Tumblr Shuffle</name>
 	<description>Tumblr shuffle.</description>
 	<author href="www.tumblr.com" email="mesenvaurk@gmail.com">Rob Been</author>
 	<content src="index.html"/>
