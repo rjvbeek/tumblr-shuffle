@@ -1,0 +1,44 @@
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.robbeen.tumblrshuffle" version="0.5" versionCode="1">
+	<name>Meistro</name>
+	<description>Tumblr shuffle.</description>
+	<author href="www.tumblr.com" email="mesenvaurk@gmail.com">Rob Been</author>
+	<content src="index.html"/>
+	<preference name="permissions" value="none"/>
+<!--	<preference name="orientation" value="portrait"/>-->
+	<preference name="target-device" value="universal"/>
+<!--	<preference name="fullscreen" value="true"/>-->
+	<preference name="webviewbounce" value="true"/>
+	<preference name="prerendered-icon" value="true"/>
+	<preference name="stay-in-webview" value="false"/>
+	<preference name="ios-statusbarstyle" value="black-opaque"/>
+	<preference name="detect-data-types" value="true"/>
+	<preference name="exit-on-suspend" value="false"/>
+	<preference name="show-splash-screen-spinner" value="true"/>
+	<preference name="auto-hide-splash-screen" value="true"/>
+	<preference name="disable-cursor" value="false"/>
+	<preference name="android-minSdkVersion" value="7"/>
+	<preference name="android-installLocation" value="auto"/>
+<!--
+	<icon src="icon.png"/>
+	<icon src="icon-ldpi.png" gap:platform="android" gap:qualifier="ldpi"/>
+	<icon src="icon-mdpi.png" gap:platform="android" gap:qualifier="mdpi"/>
+	<icon src="icon-hdpi.png" gap:platform="android" gap:qualifier="hdpi"/>
+	<icon src="icon-xhdpi.png" gap:platform="android" gap:qualifier="xhdpi"/>
+	<icon src="icon-xxhdpi.png" gap:platform="android" gap:qualifier="xxhdpi"/>
+	<icon src="icon-xxxhdpi.png" gap:platform="android" gap:qualifier="xxxhdpi"/>
+-->
+	<gap:plugin name="org.apache.cordova.network-information"/>
+	
+	<plugin name="cordova-plugin-whitelist" />	
+	<allow-navigation href="*" />
+	<allow-intent href="http://*/*" />
+	<allow-intent href="https://*/*" />
+	<access origin="*" />
+
+	<gap:config-file platform="ios" parent="UIStatusBarHidden" overwrite="true"> 
+		<true/> 
+	</gap:config-file>
+	<gap:config-file platform="ios" parent="UIViewControllerBasedStatusBarAppearance" overwrite="true">
+		<false/>
+	</gap:config-file>
+</widget>
