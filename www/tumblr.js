@@ -71,6 +71,7 @@ var nextPic = function() {
 	} else {
 		showRandomPost();
 	}
+	$('.ui-btn-active').removeClass('ui-btn-active ui-focus');
 }
 
 var prevPic = function() {
@@ -78,6 +79,7 @@ var prevPic = function() {
 		var prev = $.mobile.activePage.prev('.ui-page');
 		$.mobile.changePage(prev);
 	}
+	$('.ui-btn-active').removeClass('ui-btn-active ui-focus');
 }
 
 var showRandomPost = function() {
