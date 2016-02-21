@@ -5,8 +5,9 @@ var slideshowIntervalId = 0;
 
 $(document).ready(function(){
 	while (blog == "") {
-		blog = prompt("Blog:");
+		blog = prompt("Blog:", localStorage.prevblog);
 	}
+	localStorage.setItem("prevblog", blog);
 	$.ajax({
 		type: "GET",
 		url: /*"http://crossorigin.me/" + */"http://" + blog + ".tumblr.com/api/read/json?type=photo",
@@ -51,6 +52,14 @@ $(document).ready(function(){
 			clearInterval(slideshowIntervalId);
 			slideshowIntervalId = 0;
 		}
+	});
+	
+			
+	$( document ).on( "mobileinit", function() {
+		$.mobile.loader.prototype.options.text = "loading";
+		$.mobile.loader.prototype.options.textVisible = false;
+		$.mobile.loader.prototype.options.theme = "a";
+		$.mobile.loader.prototype.options.html = "";
 	});
 });
 
@@ -106,8 +115,15 @@ var showRandomPost = function() {
 			}
 			$('body').append(div);
 			$('#cc_' + num).append(html);
-			//$('#cc_' + num).scrollview();
-			$.mobile.changePage($('#cc_' + num));
+			
+			$('#cc_' + num).imagesLoaded().always( function( instance ) {
+				$.mobile.changePage($('#cc_' + num));
+			});
+			
+			var interval = setInterval(function(){
+				$.mobile.loading('show');
+				clearInterval(interval);
+			},1); 
 			
 			if (slideshowIntervalId > 0) {
 				clearInterval(slideshowIntervalId);
