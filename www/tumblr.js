@@ -125,7 +125,7 @@ var showRandomPost = function() {
 					var photo = post["photos"][i];
 					var img_url = photo["photo-url-1280"];
 					html += '<img class="tumblr_pic" src="'+img_url+'" />';
-					html += '<a class="download" href="'+img_url+'" download style="display: none;"><img class="tumblr_pic" src="'+img_url+'" /></a>';
+					html += '<a class="download" href="'+img_url+'" download style="/*display: none;*/"><img class="tumblr_pic" src="'+img_url+'" /></a>';
 				}
 				$('body').append(div);
 				$('#cc_' + num).append(html);
