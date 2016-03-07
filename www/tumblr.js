@@ -28,15 +28,22 @@ $(document).ready(function(){
 
 	$(document).on('click', '#goback', function () {
 		prevPic();
-	});	
+	});
+
+	$(document).on('click', '#download', function () {
+		$.each($.mobile.activePage.find("a.download > img"), function() {
+			$(this).trigger('click');
+		});
+		$('.ui-btn-active').removeClass('ui-btn-active ui-focus');
+	});
 
 	$(document).on('swipeleft', '.ui-page', function () {
 		nextPic();
-	});	
+	});
 
 	$(document).on('swiperight', '.ui-page', function () {
 		prevPic();
-	});	
+	});
 	
 	$(document).keyup(function(e) {
 		if (e.keyCode == 39) {  
@@ -95,6 +102,7 @@ var showRandomPost = function() {
 		+ '			<li><a href="" data-role="button" id="goback">Back</a></li>'
 		+ '			<li><a href="" data-role="button" id="slideshow">Toggle slideshow</a></li>'
 		+ '			<li><a href="" data-role="button" id="goforward">Forward</a></li>'
+		+ '			<li><a href="" data-role="button" id="download">Download</a></li>'
 		+ '		</ul>'
 		+ '	</div>'
 		+ '</div>'	
@@ -117,6 +125,7 @@ var showRandomPost = function() {
 					var photo = post["photos"][i];
 					var img_url = photo["photo-url-1280"];
 					html += '<img class="tumblr_pic" src="'+img_url+'" />';
+					html += '<a class="download" href="'+img_url+'" download style="display: none;"><img class="tumblr_pic" src="'+img_url+'" /></a>';
 				}
 				$('body').append(div);
 				$('#cc_' + num).append(html);
