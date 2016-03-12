@@ -31,10 +31,10 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '#download', function () {
-		$.each($.mobile.activePage.find("a.download > img"), function() {
-			$(this).trigger('click');
-		});
-		$('.ui-btn-active').removeClass('ui-btn-active ui-focus');
+		//downloadURL($(this).attr('href'));
+		//$('.ui-btn-active').removeClass('ui-btn-active ui-focus');
+		
+		//return false;
 	});
 
 	$(document).on('swipeleft', '.ui-page', function () {
@@ -62,7 +62,6 @@ $(document).ready(function(){
 		}
 	});
 	
-			
 	$( document ).on( "mobileinit", function() {
 		$.mobile.loader.prototype.options.text = "loading";
 		$.mobile.loader.prototype.options.textVisible = false;
@@ -124,8 +123,9 @@ var showRandomPost = function() {
 					}
 					var photo = post["photos"][i];
 					var img_url = photo["photo-url-1280"];
+					html += '<a download href="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/4/11/1397210130748/Spring-Lamb.-Image-shot-2-011.jpg">Lamb</a>'; 
 					html += '<img class="tumblr_pic" src="'+img_url+'" />';
-					html += '<a class="download" href="'+img_url+'" style="/*display: none;*/">Nu downloaden</a>';
+					//html += '<a class="download" onclick="downloadURL(\''+img_url+'\')" style="/*display: none;*/">Nu downloaden</a>';
 				}
 				$('body').append(div);
 				$('#cc_' + num).append(html);
