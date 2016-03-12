@@ -96,12 +96,13 @@ var showRandomPost = function() {
 		}
 		var div = '<div class="picdiv" id="cc_' + num + '" data-role="page" data-scroll="true">' 
 		+ '	<div data-role="footer" data-id="navbar" data-position="fixed">'
+		+ ' <div class="arrows_container"><div class="arrows"></div></div>'
 		+ '	<div data-role="navbar">'
 		+ '		<ul>'
 		+ '			<li><a href="" data-role="button" id="goback">Back</a></li>'
 		+ '			<li><a href="" data-role="button" id="slideshow">Toggle slideshow</a></li>'
 		+ '			<li><a href="" data-role="button" id="goforward">Forward</a></li>'
-		+ '			<li><a href="" data-role="button" id="download">Download</a></li>'
+		//+ '			<li><a href="" data-role="button" id="download">Download</a></li>'
 		+ '		</ul>'
 		+ '	</div>'
 		+ '</div>'	
@@ -117,13 +118,13 @@ var showRandomPost = function() {
 					post["photos"][0] = { "photo-url-1280": post["photo-url-1280"]}
 				}
 				var html = '';
+
 				for (i=0; i<post["photos"].length; i++) {
 					if (i > 0) {
 						html += "<br />"
 					}
 					var photo = post["photos"][i];
 					var img_url = photo["photo-url-1280"];
-					html += '<a download href="http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2014/4/11/1397210130748/Spring-Lamb.-Image-shot-2-011.jpg">Lamb</a>'; 
 					html += '<img class="tumblr_pic" src="'+img_url+'" />';
 					//html += '<a class="download" onclick="downloadURL(\''+img_url+'\')" style="/*display: none;*/">Nu downloaden</a>';
 				}
@@ -133,7 +134,14 @@ var showRandomPost = function() {
 				if (slideshowIntervalId > 0) {
 					clearInterval(slideshowIntervalId);
 				}
-				
+
+				if (post["photos"].length > 1) {
+					$('#cc_' + num +' .arrows').show();
+				} else {
+					
+					$('#cc_' + num +' .arrows').hide();
+				}
+
 				$('#cc_' + num).imagesLoaded().always( function( instance ) {
 					$.mobile.changePage($('#cc_' + num));
 					if (slideshowIntervalId > 0) {
