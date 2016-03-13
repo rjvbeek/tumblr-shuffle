@@ -52,6 +52,10 @@ $(document).ready(function(){
 			prevPic();
         }
 	});
+
+	$(document).on('scroll', function () {
+		$.mobile.activePage.find('.arrows').css('bottom', (-1 * $(document).scrollTop()));
+	});
 	
 	$(document).on('click', '#slideshow', function() {
 		if (slideshowIntervalId == 0) {
