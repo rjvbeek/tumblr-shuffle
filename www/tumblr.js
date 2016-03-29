@@ -3,24 +3,12 @@ var blog = "";
 var num = -1;
 var slideshowIntervalId = 0;
 var disablenav = false;
+var relevantRequest = null;
 
 $(document).ready(function(){
-	while (blog == "") {
-		blog = prompt("Blog:", localStorage.prevblog);
+	if (blog == "") {
+		showBlogChoice();
 	}
-	localStorage.setItem("prevblog", blog);
-	$.ajax({
-		type: "GET",
-		url: /*"http://crossorigin.me/" + */"http://" + blog + ".tumblr.com/api/read/json?type=photo",
-		dataType: "jsonp",
-		success: function(results){
-			num_posts = results["posts-total"];
-			showRandomPost();
-		},
-		error: function(XMLHttpRequest, textStatus, errorThrown){
-			alert("Error fetching blog");
-		}
-	});
 
 	$(document).on('click', '#goforward', function () {
 		nextPic();
@@ -72,7 +60,97 @@ $(document).ready(function(){
 		$.mobile.loader.prototype.options.theme = "a";
 		$.mobile.loader.prototype.options.html = "";
 	});
+	
+	$('input[name=blogname]').on("keyup", function() {
+		updateBlogInfo($(this).val());
+	});
 });
+
+var showBlogChoice = function() {
+	var div = '<div id="blogchoice" data-role="page" data-scroll="true">'
+	+ '		<div data-role="fieldcontain">'
+	+ '			<label for="blogname"><h3>Blog name</h3> <p><input type="search" value="' + localStorage.getItem('prevblog') + '" name="blogname" /></p></label>'
+	+ '		</div>'
+	+ '		<div id="blog_status"></div>'
+	+ '		<button type="button" data-theme="b" name="submit" value="submit" aria-disabled="false" data-inline="true" onclick="saveBlogChoice($(\'input[name=blogname]\').val())">Shuffle!</button>'
+	+ '		<button type="button" name="cancel" value="cancel" aria-disabled="false" data-inline="true">Cancel</button>'
+	+ '</div>';
+	
+	$('body').append(div);
+	$.mobile.changePage($('#blogchoice'));
+	
+	$('#blogchoice').on('pagehide', function () {
+		$(this).remove();
+		$('#placeholder').remove();
+	});
+}
+
+var saveBlogChoice = function(c_blog) {
+	blog = c_blog;
+	localStorage.setItem("prevblog", blog);
+
+	$.ajax({
+		type: "GET",
+		timeout: 3000,
+		url: /*"http://crossorigin.me/" + */"http://" + blog + ".tumblr.com/api/read/json?type=photo",
+		dataType: "jsonp",
+		success: function(results){
+			num_posts = results["posts-total"];
+			showRandomPost();
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown){
+			console.log('error');
+		}
+	});
+}
+
+var updateBlogInfo = function(blogname) {
+	var jqxhr = $.ajax({
+		type: "GET",
+		timeout: 3000,
+		url: /*"http://crossorigin.me/" + */"http://" + blogname + ".tumblr.com/api/read/json?type=photo",
+		dataType: "jsonp"
+	});
+
+	if (relevantRequest) {
+		relevantRequest.abort();
+	}
+	relevantRequest = jqxhr;
+	
+	$('#blog_status').html("Retrieving information...");
+	$('button[name=submit]').button('disable');
+	$('button[name=cancel]').button('disable');
+
+	jqxhr.always(function(data, textStatus, jqXHR) {
+		if (jqxhr == relevantRequest) {
+			if (textStatus == "success") {				
+				$('#blog_status').html("");
+				var info = data["tumblelog"];
+				if (info["cname"].length > 0) {
+					$('#blog_status').append("Blog name: " + info["cname"]+"<br />");
+				}
+				if (info["description"].trim().length > 0) {
+					$('#blog_status').append("Blog description: " + info["description"].trim()+"<br />");
+				}
+				$('#blog_status').append("Pics found: " + data["posts-total"]);
+				
+				if (data["posts-total"] > 0) {
+					$('button[name=submit]').button('enable');
+				} else {
+					$('button[name=submit]').button('disable');
+				}
+			} else {
+				$('#blog_status').html("Could not reach blog");
+				$('button[name=submit]').button('disable');
+			}
+			relevantRequest = null;
+		}
+	});
+}
+
+var updateBlogInfoSuccess = function(update_num) {
+	console.log(update_num);
+}
 
 var nextPic = function() {
 	if ($.mobile.activePage.next('.ui-page').length !== 0) {
@@ -142,7 +220,6 @@ var showRandomPost = function() {
 				if (post["photos"].length > 1) {
 					$('#cc_' + num +' .arrows').show();
 				} else {
-					
 					$('#cc_' + num +' .arrows').hide();
 				}
 
@@ -151,6 +228,7 @@ var showRandomPost = function() {
 					if (slideshowIntervalId > 0) {
 						slideshowIntervalId = setInterval(function(){ showRandomPost() }, 5000);
 					}
+
 					disablenav = false;
 				});
 				
