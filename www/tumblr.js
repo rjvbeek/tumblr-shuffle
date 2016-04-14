@@ -68,16 +68,22 @@ $(document).ready(function(){
 
 var showBlogChoice = function() {
 	var div = '<div id="blogchoice" data-role="page" data-scroll="true">'
+	+ '	<div data-role="content">'
 	+ '		<div data-role="fieldcontain">'
 	+ '			<label for="blogname"><h3>Blog name</h3> <p><input type="search" value="' + localStorage.getItem('prevblog') + '" name="blogname" /></p></label>'
 	+ '		</div>'
 	+ '		<div id="blog_status"></div>'
 	+ '		<button type="button" data-theme="b" name="submit" value="submit" aria-disabled="false" data-inline="true" onclick="saveBlogChoice($(\'input[name=blogname]\').val())">Shuffle!</button>'
 	+ '		<button type="button" name="cancel" value="cancel" aria-disabled="false" data-inline="true">Cancel</button>'
+	+ '	</div>'
 	+ '</div>';
 	
 	$('body').append(div);
 	$.mobile.changePage($('#blogchoice'));
+	
+	if(localStorage.getItem('prevblog')) {
+		updateBlogInfo(localStorage.getItem('prevblog'));
+	}
 	
 	$('#blogchoice').on('pagehide', function () {
 		$(this).remove();
