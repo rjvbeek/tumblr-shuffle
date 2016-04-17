@@ -94,7 +94,7 @@ var showBlogChoice = function() {
 }
 
 var saveBlogChoice = function(c_blog) {
-	window.plugins.insomnia.keepAwake();
+	keepAwake();
 	blog = c_blog;
 	localStorage.setItem("prevblog", blog);
 
