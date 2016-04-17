@@ -67,6 +67,7 @@ $(document).ready(function(){
 });
 
 var showBlogChoice = function() {
+	window.plugins.insomnia.allowSleepAgain()
 	var div = '<div id="blogchoice" data-role="page" data-scroll="true">'
 	+ '	<div data-role="content">'
 	+ '		<div data-role="fieldcontain">'
@@ -79,8 +80,10 @@ var showBlogChoice = function() {
 	+ '</div>';
 	
 	$('body').append(div);
+	$('button[name=submit]').button('disable');
+	$('button[name=cancel]').button('disable');
 	$.mobile.changePage($('#blogchoice'));
-	
+
 	if(localStorage.getItem('prevblog')) {
 		updateBlogInfo(localStorage.getItem('prevblog'));
 	}
@@ -92,6 +95,7 @@ var showBlogChoice = function() {
 }
 
 var saveBlogChoice = function(c_blog) {
+	window.plugins.insomnia.keepAwake();
 	blog = c_blog;
 	localStorage.setItem("prevblog", blog);
 

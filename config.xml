@@ -30,6 +30,8 @@
 	<gap:plugin name="org.apache.cordova.network-information"/>
 	
 	<plugin name="cordova-plugin-whitelist" />	
+	<plugin name="cordova-plugin-insomnia" version="4.1.0" source="npm" />
+
 	<allow-navigation href="*" />
 	<allow-intent href="http://*/*" />
 	<allow-intent href="https://*/*" />
