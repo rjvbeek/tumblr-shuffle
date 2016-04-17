@@ -67,7 +67,6 @@ $(document).ready(function(){
 });
 
 var showBlogChoice = function() {
-	window.plugins.insomnia.allowSleepAgain()
 	var div = '<div id="blogchoice" data-role="page" data-scroll="true">'
 	+ '	<div data-role="content">'
 	+ '		<div data-role="fieldcontain">'
@@ -80,8 +79,6 @@ var showBlogChoice = function() {
 	+ '</div>';
 	
 	$('body').append(div);
-	$('button[name=submit]').button('disable');
-	$('button[name=cancel]').button('disable');
 	$.mobile.changePage($('#blogchoice'));
 
 	if(localStorage.getItem('prevblog')) {
@@ -92,6 +89,8 @@ var showBlogChoice = function() {
 		$(this).remove();
 		$('#placeholder').remove();
 	});
+	$('button[name=submit]').button('disable');
+	$('button[name=cancel]').button('disable');
 }
 
 var saveBlogChoice = function(c_blog) {
