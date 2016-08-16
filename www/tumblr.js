@@ -186,12 +186,14 @@ var showRandomPost = function() {
 			num = Math.floor(Math.random() * (num_posts));
 		}
 		var div = '<div class="picdiv" id="cc_' + num + '" data-role="page" data-scroll="true">' 
+		+ ' <div class="heart"></div>'
 		+ '	<div data-role="footer" data-id="navbar" data-position="fixed">'
 		+ ' <div class="arrows_container"><div class="arrows"></div></div>'
 		+ '	<div data-role="navbar">'
 		+ '		<ul>'
 		+ '			<li><a href="" data-role="button" id="goback">Back</a></li>'
 		+ '			<li><a href="" data-role="button" id="slideshow">Toggle slideshow</a></li>'
+		+ '			<li><a href="" data-role="button" id="favourites">Favourites</a></li>'
 		+ '			<li><a href="" data-role="button" id="goforward">Forward</a></li>'
 		//+ '			<li><a href="" data-role="button" id="download">Download</a></li>'
 		+ '		</ul>'
