@@ -32,11 +32,7 @@ $(document).ready(function(){
 	});
 
 	$(document).on('click', '#favourites', function () {
-		if (favourites.length > 0) {
-			shuffleFavourites = true;
-			num_posts = favourites.length;
-			showRandomPost();
-		}
+		startFavourites();
 	});
 
 	$(document).on('click', '#download', function () {
@@ -95,6 +91,7 @@ var showBlogChoice = function() {
 	+ '		</div>'
 	+ '		<div id="blog_status"></div>'
 	+ '		<button type="button" data-theme="b" name="submit" value="submit" aria-disabled="false" data-inline="true" onclick="saveBlogChoice($(\'input[name=blogname]\').val())">Shuffle!</button>'
+	+ '		<button type="button" data-theme="b" name="submit" value="submit" aria-disabled="false" data-inline="true" onclick="startFavourites();">Favourites</button>'
 	+ '		<button type="button" name="cancel" value="cancel" aria-disabled="false" data-inline="true">Cancel</button>'
 	+ '	</div>'
 	+ '</div>';
@@ -315,4 +312,13 @@ function arrayObjectIndexOf(myArray, searchArr) {
         if (myArray[i]['blog'] === searchArr['blog'] && myArray[i]['post_id'] === searchArr['post_id']) return i;
     }
     return -1;
+}
+
+var startFavourites = function() {
+	console.log('ja');
+	if (favourites.length > 0) {
+		shuffleFavourites = true;
+		num_posts = favourites.length;
+		showRandomPost();
+	}
 }
