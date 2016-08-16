@@ -203,8 +203,14 @@ var prevPic = function() {
 var showRandomPost = function() {
 	if (!disablenav) {
 		disablenav = true;
+		var numAttempts = 0;
 		while ($('#cc_' + num).length != 0 || num == -1) {
+			numAttempts++;
 			num = Math.floor(Math.random() * (num_posts));
+			
+			if (numAttempts >= 60) {
+				return -1;
+			}
 		}
 		var div = '<div class="picdiv" id="cc_' + num + '" data-role="page" data-scroll="true">' 
 		+ ' <div class="heart" data-postid=""></div>'
