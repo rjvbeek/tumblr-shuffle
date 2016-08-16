@@ -4,8 +4,17 @@ var num = -1;
 var slideshowIntervalId = 0;
 var disablenav = false;
 var relevantRequest = null;
+var shuffleFavourites = false;
+var favourites = null;
 
 $(document).ready(function(){
+	favourites = localStorage.getItem('favourites');
+	if (!favourites) {
+		favourites = new Array();
+	} else {
+		favourites = JSON.parse(favourites);
+	}
+	
 	if (blog == "") {
 		showBlogChoice();
 	}
@@ -16,6 +25,18 @@ $(document).ready(function(){
 
 	$(document).on('click', '#goback', function () {
 		prevPic();
+	});
+
+	$(document).on('click', '.heart', function () {
+		toggleFavourite(blog, $(this).attr('data-postid'));
+	});
+
+	$(document).on('click', '#favourites', function () {
+		if (favourites.length > 0) {
+			shuffleFavourites = true;
+			num_posts = favourites.length;
+			showRandomPost();
+		}
 	});
 
 	$(document).on('click', '#download', function () {
@@ -186,7 +207,7 @@ var showRandomPost = function() {
 			num = Math.floor(Math.random() * (num_posts));
 		}
 		var div = '<div class="picdiv" id="cc_' + num + '" data-role="page" data-scroll="true">' 
-		+ ' <div class="heart"></div>'
+		+ ' <div class="heart" data-postid=""></div>'
 		+ '	<div data-role="footer" data-id="navbar" data-position="fixed">'
 		+ ' <div class="arrows_container"><div class="arrows"></div></div>'
 		+ '	<div data-role="navbar">'
@@ -200,9 +221,17 @@ var showRandomPost = function() {
 		+ '	</div>'
 		+ '</div>'	
 		+ '</div>';
+		
+		var post_url = "";
+		if (shuffleFavourites) {
+			post_url = "http://" + favourites[num].blog + ".tumblr.com/api/read/json?type=photo&id="+favourites[num].post_id;
+		} else {
+			post_url = "http://" + blog + ".tumblr.com/api/read/json?type=photo&num=1&start="+num;
+		}
+
 		$.ajax({
 			type: "GET",
-			url: /*"http://crossorigin.me/" + */"http://" + blog + ".tumblr.com/api/read/json?type=photo&num=1&start="+num,
+			url: /*"http://crossorigin.me/" + */ post_url,
 			dataType: "jsonp",
 			success: function(results){
 				var post = results["posts"][0];
@@ -233,6 +262,8 @@ var showRandomPost = function() {
 				} else {
 					$('#cc_' + num +' .arrows').hide();
 				}
+				
+				$('#cc_' + num +' .heart').attr('data-postid', post.id);
 
 				$('#cc_' + num).imagesLoaded().always( function( instance ) {
 					$.mobile.changePage($('#cc_' + num));
@@ -253,4 +284,29 @@ var showRandomPost = function() {
 			}
 		});
 	}
+}
+
+var toggleFavourite = function(blog, post_id) {
+	var fav = {
+		'blog':		blog,
+		'post_id':	post_id
+	};
+	var fav_index = arrayObjectIndexOf(favourites, fav);
+
+	if (fav_index == -1) {
+		favourites.push(fav);
+	} else {
+		favourites.splice(fav_index, 1);
+	}
+	if (shuffleFavourites) {
+		num_posts = favourites.length;
+	}
+	localStorage.setItem("favourites", JSON.stringify(favourites));
+}
+
+function arrayObjectIndexOf(myArray, searchArr) {
+    for(var i = 0, len = myArray.length; i < len; i++) {
+        if (myArray[i]['blog'] === searchArr['blog'] && myArray[i]['post_id'] === searchArr['post_id']) return i;
+    }
+    return -1;
 }
