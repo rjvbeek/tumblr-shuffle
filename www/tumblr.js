@@ -8,6 +8,9 @@ var shuffleFavourites = false;
 var favourites = null;
 
 $(document).ready(function(){
+	$("#fav_added, #fav_deleted").popup();
+	$("#fav_added, #fav_deleted").popup("option", {"history": false, "dismissable": false, "transition": "pop"});
+	
 	favourites = localStorage.getItem('favourites');
 	if (!favourites) {
 		favourites = new Array();
@@ -298,8 +301,12 @@ var toggleFavourite = function(blog, post_id) {
 
 	if (fav_index == -1) {
 		favourites.push(fav);
+		popupSturdyOpen("fav_added");
+		setTimeout(function(){ $('#fav_added').popup("close"); }, 1500);
 	} else {
 		favourites.splice(fav_index, 1);
+		popupSturdyOpen("fav_deleted");
+		setTimeout(function(){ $('#fav_deleted').popup("close"); }, 1500);
 	}
 	if (shuffleFavourites) {
 		num_posts = favourites.length;
@@ -321,4 +328,16 @@ var startFavourites = function() {
 		num_posts = favourites.length;
 		showRandomPost();
 	}
+}
+
+function popupSturdyOpen (id) {
+  var ticksSeen = -1
+  var interval = setInterval (function(){
+    var hidden = $('#' + id + '-popup') .hasClass ('ui-popup-hidden')
+    if (hidden || ++ticksSeen <= 0) {
+      $('#' + id) .popup ('open')
+    } else {
+      if (++ticksSeen > 20) clearInterval (interval)
+    }
+  }, 100)
 }
